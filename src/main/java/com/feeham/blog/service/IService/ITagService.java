@@ -12,4 +12,5 @@ public interface ITagService {
     void update(Integer tagId, String tag);
     void delete(Integer tagId);
     List<Tag> readAll();
+    void addPostToTag(Integer tagId, Integer postId);
 }

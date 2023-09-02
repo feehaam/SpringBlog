@@ -45,4 +45,12 @@ public class TagService implements ITagService {
     public List<Tag> readAll() {
         return tagRepository.findAll();
     }
+
+    @Override
+    public void addPostToTag(Integer tagId, Integer postId) {
+        Optional<Tag> opTag = read(tagId);
+        opTag.ifPresent(tag -> {
+
+        });
+    }
 }
