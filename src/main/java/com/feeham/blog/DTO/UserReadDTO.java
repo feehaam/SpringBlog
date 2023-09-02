@@ -2,12 +2,11 @@ package com.feeham.blog.DTO;
 
 import com.feeham.blog.entity.Comment;
 import com.feeham.blog.entity.Post;
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class UserReadDto {
+public class UserReadDTO {
     private Integer id;
     private String email;
     private String firstName;

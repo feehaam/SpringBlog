@@ -1,23 +1,20 @@
 package com.feeham.blog.DTO;
 
 import com.feeham.blog.entity.Comment;
-import com.feeham.blog.entity.Post;
-import com.feeham.blog.entity.User;
-import jakarta.persistence.*;
+import com.feeham.blog.entity.Tag;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CommentReadDto {
+public class PostReadDTO {
     private Integer id;
+    private String title;
     private String content;
     private LocalDateTime timeCreated;
-    private Integer upVotes;
-    private Integer downVotes;
+    private LocalDateTime timeLastModified;
     private Integer userID;
     private String userFullName;
     private String userEmail;
-    private Integer parentPostId;
-    private Integer parentCommentId;
-    private List<Comment> replies;
+    private List<Comment> comments;
+    private List<Tag> tags;
 }

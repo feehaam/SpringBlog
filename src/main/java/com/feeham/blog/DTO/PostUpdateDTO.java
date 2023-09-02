@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Data
 @Component
 @AllArgsConstructor
-public class CommentCreateDto {
-    private Integer userId;
-    private Integer postId;
-    private Integer parentCommentId;
+public class PostUpdateDTO {
+    private String title;
     private String content;
+    private List<Integer> tagIdList;
 }

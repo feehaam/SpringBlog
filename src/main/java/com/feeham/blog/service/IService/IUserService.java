@@ -1,15 +1,15 @@
 package com.feeham.blog.service.IService;
 
-import com.feeham.blog.DTO.UserCreateDto;
-import com.feeham.blog.DTO.UserReadDto;
-import com.feeham.blog.DTO.UserUpdateDto;
+import com.feeham.blog.DTO.UserCreateDTO;
+import com.feeham.blog.DTO.UserReadDTO;
+import com.feeham.blog.DTO.UserUpdateDTO;
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-    void create(UserCreateDto userCreateDto);
-    Optional<UserReadDto> read(Integer userId);
-    void update(UserUpdateDto userUpdateDto);
+    void create(UserCreateDTO userCreateDto);
+    Optional<UserReadDTO> read(Integer userId);
+    void update(UserUpdateDTO userUpdateDto);
     void delete(Integer userId);
-    List<UserReadDto> readAll();
+    List<UserReadDTO> readAll();
 }

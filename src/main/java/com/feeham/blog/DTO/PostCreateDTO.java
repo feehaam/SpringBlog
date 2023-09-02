@@ -9,8 +9,9 @@ import java.util.List;
 @Data
 @Component
 @AllArgsConstructor
-public class PostUpdateDto {
+public class PostCreateDTO {
     private String title;
     private String content;
+    private Integer authorId;
     private List<Integer> tagIdList;
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @AllArgsConstructor
-public class CommentUpdateDto {
+public class CommentUpdateDTO {
     private Integer commentId;
     private String content;
 }

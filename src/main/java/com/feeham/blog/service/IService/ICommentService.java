@@ -1,16 +1,16 @@
 package com.feeham.blog.service.IService;
 
-import com.feeham.blog.DTO.CommentCreateDto;
-import com.feeham.blog.DTO.CommentReadDto;
-import com.feeham.blog.DTO.CommentUpdateDto;
+import com.feeham.blog.DTO.CommentCreateDTO;
+import com.feeham.blog.DTO.CommentReadDTO;
+import com.feeham.blog.DTO.CommentUpdateDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ICommentService {
-    void create(CommentCreateDto commentCreateDto);
-    Optional<CommentReadDto> read(Integer commentId);
-    void update(CommentUpdateDto commentUpdateDto);
+    void create(CommentCreateDTO commentCreateDto);
+    Optional<CommentReadDTO> read(Integer commentId);
+    void update(CommentUpdateDTO commentUpdateDto);
     void delete(Integer commentId);
-    List<CommentReadDto> readAll();
+    List<CommentReadDTO> readAll();
 }
