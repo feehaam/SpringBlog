@@ -19,10 +19,11 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, ModelMapper modelMapper){
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
