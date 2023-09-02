@@ -3,12 +3,14 @@ package com.feeham.blog.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
+@Component
 @Table(name = "users")
 @AllArgsConstructor
 public class User {
