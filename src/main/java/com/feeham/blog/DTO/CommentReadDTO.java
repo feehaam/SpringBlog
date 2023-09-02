@@ -16,7 +16,7 @@ public class CommentReadDTO {
     private String userEmail;
     private Integer parentPostId;
     private Integer parentCommentId;
-    private List<Comment> replies;
+    private List<CommentReadDTO> replies;
 
     public CommentReadDTO() {
 
@@ -24,7 +24,7 @@ public class CommentReadDTO {
 
     public CommentReadDTO(Integer id, String content, LocalDateTime timeCreated, Integer upVotes,
                           Integer downVotes, Integer userID, String userFullName, String userEmail,
-                          Integer parentPostId, Integer parentCommentId, List<Comment> replies) {
+                          Integer parentPostId, Integer parentCommentId, List<CommentReadDTO> replies) {
         this.id = id;
         this.content = content;
         this.timeCreated = timeCreated;
@@ -118,11 +118,11 @@ public class CommentReadDTO {
         this.parentCommentId = parentCommentId;
     }
 
-    public List<Comment> getReplies() {
+    public List<CommentReadDTO> getReplies() {
         return replies;
     }
 
-    public void setReplies(List<Comment> replies) {
+    public void setReplies(List<CommentReadDTO> replies) {
         this.replies = replies;
     }
 }

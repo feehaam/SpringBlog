@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @Component
 public class UserUpdateDTO {
+    private Integer id;
     private String password;
     private String firstName;
     private String lastName;
@@ -18,8 +19,9 @@ public class UserUpdateDTO {
 
     }
 
-    public UserUpdateDTO(String password, String firstName, String lastName, Integer age,
+    public UserUpdateDTO(Integer id, String password, String firstName, String lastName, Integer age,
                          LocalDate dateOfBirth, String bio, String profileImageUrl) {
+        this.id = id;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,6 +29,14 @@ public class UserUpdateDTO {
         this.dateOfBirth = dateOfBirth;
         this.bio = bio;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getPassword() {
