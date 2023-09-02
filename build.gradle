@@ -34,8 +34,6 @@ dependencies {
 	// implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
 
 	// Utility
-	compileOnly 'org.projectlombok:lombok' // lombok
-	annotationProcessor 'org.projectlombok:lombok' // lombok
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // testing
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1' // DTO mapping
 }

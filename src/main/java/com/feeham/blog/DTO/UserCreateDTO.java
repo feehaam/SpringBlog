@@ -1,8 +1,5 @@
 package com.feeham.blog.DTO;
 
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
