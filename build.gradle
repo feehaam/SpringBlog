@@ -1,0 +1,41 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.3'
+	id 'io.spring.dependency-management' version '1.1.3'
+}
+
+group = 'com.feeham'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// For database and ORM
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// For web and UI
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Utility
+	compileOnly 'org.projectlombok:lombok' // lombok
+	annotationProcessor 'org.projectlombok:lombok' // lombok
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // testing
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.1.1' // DTO mapping
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
