@@ -1,6 +1,7 @@
 package com.feeham.blog.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class Tag {
     public void setTag(String tag) {
         this.tag = tag;
     }
+    @JsonIgnore
 
     public List<Post> getPosts() {
         return posts;

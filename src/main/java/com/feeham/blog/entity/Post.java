@@ -1,5 +1,6 @@
 package com.feeham.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysql.cj.protocol.ColumnDefinition;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class Post {
     // Relational references
     @ManyToOne
     @JoinColumn(name = "author_uid")
+    @JsonIgnore
     private User author;
     @OneToMany(mappedBy = "parentPost", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -30,6 +32,7 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @JsonIgnore
     private List<Tag> tags;
 
     public Post() {

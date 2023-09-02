@@ -4,12 +4,18 @@ import com.feeham.blog.DTO.PostCreateDTO;
 import com.feeham.blog.DTO.PostReadDTO;
 import com.feeham.blog.DTO.PostUpdateDTO;
 import com.feeham.blog.entity.Post;
+import com.feeham.blog.entity.Tag;
+import com.feeham.blog.entity.User;
 import com.feeham.blog.repository.PostRepository;
+import com.feeham.blog.repository.TagRepository;
+import com.feeham.blog.repository.UserRepository;
 import com.feeham.blog.service.IService.IPostService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,17 +24,40 @@ import java.util.stream.Collectors;
 public class PostService implements IPostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
-    @Autowired
-    public PostService(PostRepository postRepository, ModelMapper modelMapper) {
+    public PostService(PostRepository postRepository, ModelMapper modelMapper,
+                       UserRepository userRepository, TagRepository tagRepository) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+        this.tagRepository = tagRepository;
     }
 
     @Override
     public void create(PostCreateDTO postCreateDTO) {
-        Post post = modelMapper.map(postCreateDTO, Post.class);
 
+        Post post = new Post();
+        Optional<User> userOptional = userRepository.findById(postCreateDTO.getAuthorId());
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+
+            post.setTitle(postCreateDTO.getTitle());
+            post.setContent(postCreateDTO.getContent());
+            post.setTimeCreated(LocalDateTime.now());
+            post.setTimeLastModified(LocalDateTime.now());
+            post.setComments(new ArrayList<>());
+            post.setTags(new ArrayList<>());
+            for(Integer tagId: postCreateDTO.getTagIdList()){
+                Optional<Tag> tagOptional = tagRepository.findById(tagId);
+                tagOptional.ifPresent(tag -> post.getTags().add(tag));
+            }
+            post.setAuthor(user);
+            user.getPosts().add(post);
+
+            postRepository.save(post);
+        }
         postRepository.save(post);
     }
 
@@ -40,16 +69,12 @@ public class PostService implements IPostService {
 
     @Override
     public void update(PostUpdateDTO postUpdateDTO) {
-        // Fetch the existing post by ID
         Optional<Post> postOptional = postRepository.findById(postUpdateDTO.getId());
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
-            // Update the post entity with new values from DTO
             modelMapper.map(postUpdateDTO, post);
-            // Save the updated post
             postRepository.save(post);
         } else {
-            // Handle the case when the post does not exist
             throw new IllegalArgumentException("Post not found with ID: " + postUpdateDTO.getId());
         }
     }

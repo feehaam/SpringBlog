@@ -1,5 +1,6 @@
 package com.feeham.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class User {
 
     // Relationships
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private List<Post> posts; // Posts authored by the user
 
     @OneToMany(mappedBy = "user")
