@@ -14,7 +14,7 @@ public class Tag {
     @Id
     @Column(name = "tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String tag;
 
     // Relational references

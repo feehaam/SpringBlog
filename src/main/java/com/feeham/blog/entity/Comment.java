@@ -15,14 +15,14 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
     private LocalDateTime timeCreated;
-    private int upVotes;
-    private int downVotes;
+    private Integer upVotes;
+    private Integer downVotes;
 
     // Relational references
     @ManyToOne

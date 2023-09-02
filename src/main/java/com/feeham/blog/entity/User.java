@@ -15,14 +15,15 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private LocalDate dateOfBirth;
+    @Column(columnDefinition = "TEXT")
     private String bio;
     private String profileImageUrl;
     private LocalDate dateJoined;
