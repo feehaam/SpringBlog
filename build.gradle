@@ -29,6 +29,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// DB connectors
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+	// implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
+
 	// Utility
 	compileOnly 'org.projectlombok:lombok' // lombok
 	annotationProcessor 'org.projectlombok:lombok' // lombok
