@@ -6,6 +6,8 @@ import com.feeham.blog.DTO.PostUpdateDTO;
 import com.feeham.blog.entity.Post;
 import com.feeham.blog.entity.Tag;
 import com.feeham.blog.entity.User;
+import com.feeham.blog.exceptions.NoRecordException;
+import com.feeham.blog.exceptions.ResourceNotFoundException;
 import com.feeham.blog.repository.PostRepository;
 import com.feeham.blog.repository.UserRepository;
 import com.feeham.blog.service.IService.IPostService;
@@ -37,11 +39,10 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public void create(PostCreateDTO postCreateDTO) {
-
+    public void create(PostCreateDTO postCreateDTO) throws ResourceNotFoundException {
         Post post = new Post();
         Optional<User> userOptional = userRepository.findById(postCreateDTO.getAuthorId());
-        if(userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
 
             post.setTitle(postCreateDTO.getTitle());
@@ -50,7 +51,7 @@ public class PostService implements IPostService {
             post.setTimeLastModified(LocalDateTime.now());
             post.setComments(new ArrayList<>());
             post.setTags(new ArrayList<>());
-            for(Integer tagId: postCreateDTO.getTagIdList()){
+            for (Integer tagId : postCreateDTO.getTagIdList()) {
                 Tag tag = tagService.read(tagId);
                 post.getTags().add(tag);
             }
@@ -58,45 +59,61 @@ public class PostService implements IPostService {
             user.getPosts().add(post);
 
             postRepository.save(post);
+        } else {
+            throw new ResourceNotFoundException("User not found", "Create post",
+                    "User with ID " + postCreateDTO.getAuthorId() + " not found.");
         }
-        postRepository.save(post);
     }
 
     @Override
-    public Optional<PostReadDTO> read(Integer postId) {
+    public PostReadDTO read(Integer postId) throws ResourceNotFoundException {
         Optional<Post> postOptional = postRepository.findById(postId);
-        return postOptional.map(manualMapper::postToPostReadDTO).or(Optional::empty);
+        return postOptional.map(manualMapper::postToPostReadDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found", "Get post",
+                        "Post with ID " + postId + " does not exist."));
     }
 
     @Override
-    public void update(PostUpdateDTO postUpdateDTO) {
+    public void update(PostUpdateDTO postUpdateDTO) throws ResourceNotFoundException {
         Optional<Post> postOptional = postRepository.findById(postUpdateDTO.getId());
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
             autoMapper.map(postUpdateDTO, post);
             postRepository.save(post);
         } else {
-            throw new IllegalArgumentException("Post not found with ID: " + postUpdateDTO.getId());
+            throw new ResourceNotFoundException("Post not found", "Update post",
+                    "Post with ID " + postUpdateDTO.getId() + " does not exist.");
         }
     }
 
     @Override
-    public void delete(Integer postId) {
+    public void delete(Integer postId) throws ResourceNotFoundException {
+        if (!postRepository.existsById(postId)) {
+            throw new ResourceNotFoundException("Failed to delete", "Delete post",
+                    "Post with ID " + postId + " does not exist.");
+        }
         postRepository.deleteById(postId);
     }
 
     @Override
-    public List<PostReadDTO> readAll() {
+    public List<PostReadDTO> readAll() throws NoRecordException {
         List<Post> posts = postRepository.findAll();
+        if (posts.isEmpty()) {
+            throw new NoRecordException("No records found", "List of posts", "No posts in the database");
+        }
         return posts.stream()
                 .map(manualMapper::postToPostReadDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void addTagToPost(Integer postId, Integer tagId) {
+    public void addTagToPost(Integer postId, Integer tagId) throws ResourceNotFoundException{
         Tag tag = tagService.read(tagId);
         Optional<Post> postOptional = postRepository.findById(postId);
-        postOptional.ifPresent(post -> tag.getPosts().add(post));
+        if(postOptional.isEmpty()){
+            throw new ResourceNotFoundException("Post not found", "Add tag to post",
+                    "Post with ID " + postId + " does not exist.");
+        }
+        postOptional.get().getTags().add(tag);
     }
 }

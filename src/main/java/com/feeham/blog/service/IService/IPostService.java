@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface IPostService {
     void create(PostCreateDTO postCreateDto);
-    Optional<PostReadDTO> read(Integer postId);
+    PostReadDTO read(Integer postId);
     void update(PostUpdateDTO postUpdateDto);
     void delete(Integer postId);
     List<PostReadDTO> readAll();
