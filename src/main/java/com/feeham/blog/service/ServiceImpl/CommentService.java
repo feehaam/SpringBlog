@@ -4,9 +4,9 @@ import com.feeham.blog.DTO.CommentCreateDTO;
 import com.feeham.blog.DTO.CommentReadDTO;
 import com.feeham.blog.DTO.CommentUpdateDTO;
 import com.feeham.blog.entity.Comment;
-import com.feeham.blog.helper.ManualMapper;
 import com.feeham.blog.repository.CommentRepository;
 import com.feeham.blog.service.IService.ICommentService;
+import com.feeham.blog.service.ServiceImpl.helper.ManualMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

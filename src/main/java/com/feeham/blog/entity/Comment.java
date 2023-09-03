@@ -1,5 +1,6 @@
 package com.feeham.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,15 +24,18 @@ public class Comment {
     // Relational references
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "parent_post_id")
+    @JsonIgnore
     private Post parentPost;
 
     // Recursive self referencing relation
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
+    @JsonIgnore
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment")

@@ -1,4 +1,4 @@
-package com.feeham.blog.helper;
+package com.feeham.blog.service.ServiceImpl.helper;
 
 import com.feeham.blog.DTO.CommentCreateDTO;
 import com.feeham.blog.DTO.CommentReadDTO;
@@ -7,6 +7,7 @@ import com.feeham.blog.entity.Comment;
 import com.feeham.blog.entity.Post;
 import com.feeham.blog.entity.User;
 import com.feeham.blog.repository.CommentRepository;
+import com.feeham.blog.repository.PostRepository;
 import com.feeham.blog.repository.UserRepository;
 import com.feeham.blog.service.ServiceImpl.CommentService;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,13 @@ public class ManualMapper {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
-    public ManualMapper(CommentRepository commentRepository, UserRepository userRepository){
+    public ManualMapper(CommentRepository commentRepository, UserRepository userRepository,
+                        PostRepository postRepository){
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     public PostReadDTO postToPostReadDTO(Post post){
@@ -46,13 +50,20 @@ public class ManualMapper {
     public Comment CommentCreateDTOtoComment(CommentCreateDTO commentDto){
         Comment comment = new Comment();
         comment.setContent(commentDto.getContent());
-        if(commentDto.getParentCommentId() > 0){
+        if(commentDto.getParentCommentId() != null && commentDto.getParentCommentId() > 0){
             Comment parentComment = commentRepository.findById(commentDto.getParentCommentId()).get();
             comment.setParentComment(parentComment);
+        }
+        if(commentDto.getPostId() != null && commentDto.getPostId() > 0){
+            Post parentPost = postRepository.findById(commentDto.getPostId()).get();
+            comment.setParentPost(parentPost);
         }
         comment.setTimeCreated(LocalDateTime.now());
         comment.setReplies(new ArrayList<>());
         comment.setUser(userRepository.findById(commentDto.getUserId()).get());
+        comment.setDownVotes(0);
+        comment.setUpVotes(0);
+
         return comment;
     }
 
