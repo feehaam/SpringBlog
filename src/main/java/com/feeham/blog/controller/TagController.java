@@ -1,5 +1,6 @@
 package com.feeham.blog.controller;
 
+import com.feeham.blog.DTO.PostReadDTO;
 import com.feeham.blog.entity.Tag;
 import com.feeham.blog.service.IService.ITagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,15 @@ public class TagController {
     @GetMapping
     public List<Tag> getAllTags() {
         return tagService.readAll();
+    }
+
+    @GetMapping("/{tagId}/posts")
+    public List<PostReadDTO> getPostsByTagId(@PathVariable Integer tagId) {
+        return tagService.getPostsByTagId(tagId);
+    }
+
+    @GetMapping("/by-tag/{tagName}/posts")
+    public List<PostReadDTO> getPostsByTagName(@PathVariable String tagName) {
+        return tagService.getPostsByTagName(tagName);
     }
 }

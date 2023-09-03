@@ -6,6 +6,7 @@ import com.feeham.blog.DTO.PostUpdateDTO;
 import com.feeham.blog.entity.Post;
 import com.feeham.blog.entity.Tag;
 import com.feeham.blog.entity.User;
+import com.feeham.blog.helper.ManualMapper;
 import com.feeham.blog.repository.PostRepository;
 import com.feeham.blog.repository.TagRepository;
 import com.feeham.blog.repository.UserRepository;
@@ -23,16 +24,18 @@ import java.util.stream.Collectors;
 @Service
 public class PostService implements IPostService {
     private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
+    private final ModelMapper autoMapper;
     private final UserRepository userRepository;
-    private final TagRepository tagRepository;
+    private final TagService tagService;
+    private final ManualMapper manualMapper;
 
-    public PostService(PostRepository postRepository, ModelMapper modelMapper,
-                       UserRepository userRepository, TagRepository tagRepository) {
+    public PostService(PostRepository postRepository, ModelMapper modelMapper, ManualMapper manualMapper,
+                       UserRepository userRepository, TagService tagService) {
         this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
+        this.autoMapper = modelMapper;
         this.userRepository = userRepository;
-        this.tagRepository = tagRepository;
+        this.tagService = tagService;
+        this.manualMapper = manualMapper;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class PostService implements IPostService {
             post.setComments(new ArrayList<>());
             post.setTags(new ArrayList<>());
             for(Integer tagId: postCreateDTO.getTagIdList()){
-                Optional<Tag> tagOptional = tagRepository.findById(tagId);
+                Optional<Tag> tagOptional = tagService.read(tagId);
                 tagOptional.ifPresent(tag -> post.getTags().add(tag));
             }
             post.setAuthor(user);
@@ -64,7 +67,7 @@ public class PostService implements IPostService {
     @Override
     public Optional<PostReadDTO> read(Integer postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
-        return postOptional.map(post -> modelMapper.map(post, PostReadDTO.class));
+        return postOptional.map(manualMapper::postToPostReadDTO).or(Optional::empty);
     }
 
     @Override
@@ -72,7 +75,7 @@ public class PostService implements IPostService {
         Optional<Post> postOptional = postRepository.findById(postUpdateDTO.getId());
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
-            modelMapper.map(postUpdateDTO, post);
+            autoMapper.map(postUpdateDTO, post);
             postRepository.save(post);
         } else {
             throw new IllegalArgumentException("Post not found with ID: " + postUpdateDTO.getId());
@@ -88,7 +91,16 @@ public class PostService implements IPostService {
     public List<PostReadDTO> readAll() {
         List<Post> posts = postRepository.findAll();
         return posts.stream()
-                .map(post -> modelMapper.map(post, PostReadDTO.class))
+                .map(manualMapper::postToPostReadDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addTagToPost(Integer postId, Integer tagId) {
+        Optional<Tag> tagOptional = tagService.read(tagId);
+        tagOptional.ifPresent(tag -> {
+            Optional<Post> postOptional = postRepository.findById(postId);
+            postOptional.ifPresent(post -> tag.getPosts().add(post));
+        });
     }
 }

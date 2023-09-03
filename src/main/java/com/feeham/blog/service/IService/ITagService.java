@@ -1,5 +1,6 @@
 package com.feeham.blog.service.IService;
 
+import com.feeham.blog.DTO.PostReadDTO;
 import com.feeham.blog.entity.Post;
 import com.feeham.blog.entity.Tag;
 
@@ -12,5 +13,6 @@ public interface ITagService {
     void update(Integer tagId, String tag);
     void delete(Integer tagId);
     List<Tag> readAll();
-    void addPostToTag(Integer tagId, Integer postId);
+    List<PostReadDTO> getPostsByTagId(Integer tagId);
+    List<PostReadDTO> getPostsByTagName(String tag);
 }

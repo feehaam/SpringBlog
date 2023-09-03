@@ -1,5 +1,6 @@
 package com.feeham.blog.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.feeham.blog.entity.Comment;
 import com.feeham.blog.entity.Tag;
 import org.springframework.stereotype.Component;

@@ -13,4 +13,6 @@ public interface IPostService {
     void update(PostUpdateDTO postUpdateDto);
     void delete(Integer postId);
     List<PostReadDTO> readAll();
+
+    void addTagToPost(Integer postId, Integer tagId);
 }

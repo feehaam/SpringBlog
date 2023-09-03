@@ -53,4 +53,9 @@ public class PostController {
         List<PostReadDTO> posts = postService.readAll();
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
+
+    @PostMapping("/{tagId}/add-to-post/{postId}")
+    public void addTagToPost(@PathVariable Integer tagId, @PathVariable Integer postId) {
+        postService.addTagToPost(tagId, postId);
+    }
 }

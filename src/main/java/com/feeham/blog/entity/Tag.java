@@ -8,7 +8,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "tags")
-public class Tag {
+public class
+Tag {
     @Id
     @Column(name = "tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +18,7 @@ public class Tag {
 
     // Relational references
     @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
     private List<Post> posts;
 
     public Tag() {
@@ -42,7 +44,6 @@ public class Tag {
     public void setTag(String tag) {
         this.tag = tag;
     }
-    @JsonIgnore
 
     public List<Post> getPosts() {
         return posts;
