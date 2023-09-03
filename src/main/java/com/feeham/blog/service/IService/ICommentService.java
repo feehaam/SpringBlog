@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ICommentService {
     void create(CommentCreateDTO commentCreateDto);
-    Optional<CommentReadDTO> read(Integer commentId);
+    CommentReadDTO read(Integer commentId);
     void update(CommentUpdateDTO commentUpdateDto);
     void delete(Integer commentId);
     List<CommentReadDTO> readAll();
