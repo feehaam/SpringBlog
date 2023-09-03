@@ -19,7 +19,7 @@ public class UserReadDTO {
     private String profileImageUrl;
     private LocalDate dateJoined;
     private List<PostReadDTO> posts;
-    private List<Comment> comments;
+    private List<CommentReadDTO> comments;
 
     public UserReadDTO(){
 
@@ -27,7 +27,7 @@ public class UserReadDTO {
 
     public UserReadDTO(Integer id, String email, String firstName, String lastName,
                        Integer age, LocalDate dateOfBirth, String bio, String profileImageUrl,
-                       LocalDate dateJoined, List<PostReadDTO> posts, List<Comment> comments) {
+                       LocalDate dateJoined, List<PostReadDTO> posts, List<CommentReadDTO> comments) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -121,11 +121,11 @@ public class UserReadDTO {
         this.posts = posts;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentReadDTO> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentReadDTO> comments) {
         this.comments = comments;
     }
 }

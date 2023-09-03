@@ -26,11 +26,11 @@ public class User {
     private LocalDate dateJoined;
 
     // Relationships
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Post> posts; // Posts authored by the user
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments; // Comments made by the user
 
     public User() {
