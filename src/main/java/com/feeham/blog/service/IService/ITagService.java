@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ITagService {
     void create(String tag);
-    Optional<Tag> read(Integer tagId);
+    Tag read(Integer tagId);
     void update(Integer tagId, String tag);
     void delete(Integer tagId);
     List<Tag> readAll();

@@ -51,8 +51,8 @@ public class PostService implements IPostService {
             post.setComments(new ArrayList<>());
             post.setTags(new ArrayList<>());
             for(Integer tagId: postCreateDTO.getTagIdList()){
-                Optional<Tag> tagOptional = tagService.read(tagId);
-                tagOptional.ifPresent(tag -> post.getTags().add(tag));
+                Tag tag = tagService.read(tagId);
+                post.getTags().add(tag);
             }
             post.setAuthor(user);
             user.getPosts().add(post);
@@ -95,10 +95,8 @@ public class PostService implements IPostService {
 
     @Override
     public void addTagToPost(Integer postId, Integer tagId) {
-        Optional<Tag> tagOptional = tagService.read(tagId);
-        tagOptional.ifPresent(tag -> {
-            Optional<Post> postOptional = postRepository.findById(postId);
-            postOptional.ifPresent(post -> tag.getPosts().add(post));
-        });
+        Tag tag = tagService.read(tagId);
+        Optional<Post> postOptional = postRepository.findById(postId);
+        postOptional.ifPresent(post -> tag.getPosts().add(post));
     }
 }
