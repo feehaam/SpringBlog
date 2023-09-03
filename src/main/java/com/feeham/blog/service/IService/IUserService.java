@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IUserService {
     void create(UserCreateDTO userCreateDto);
-    Optional<UserReadDTO> read(Integer userId);
+    UserReadDTO read(Integer userId);
     void update(UserUpdateDTO userUpdateDto);
     void delete(Integer userId);
     List<UserReadDTO> readAll();

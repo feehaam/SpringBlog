@@ -5,11 +5,9 @@ import com.feeham.blog.DTO.CommentReadDTO;
 import com.feeham.blog.DTO.PostReadDTO;
 import com.feeham.blog.entity.Comment;
 import com.feeham.blog.entity.Post;
-import com.feeham.blog.entity.User;
 import com.feeham.blog.repository.CommentRepository;
 import com.feeham.blog.repository.PostRepository;
 import com.feeham.blog.repository.UserRepository;
-import com.feeham.blog.service.ServiceImpl.CommentService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

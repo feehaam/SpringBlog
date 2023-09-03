@@ -4,6 +4,8 @@ import com.feeham.blog.DTO.UserCreateDTO;
 import com.feeham.blog.DTO.UserReadDTO;
 import com.feeham.blog.DTO.UserUpdateDTO;
 import com.feeham.blog.entity.User;
+import com.feeham.blog.exceptions.NoRecordException;
+import com.feeham.blog.exceptions.ResourceNotFoundException;
 import com.feeham.blog.repository.UserRepository;
 import com.feeham.blog.service.IService.IUserService;
 import org.modelmapper.ModelMapper;
@@ -31,35 +33,40 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<UserReadDTO> read(Integer userId) {
+    public UserReadDTO read(Integer userId) throws ResourceNotFoundException {
         Optional<User> userOptional = userRepository.findById(userId);
-        if(userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
-            UserReadDTO userReadDTO = modelMapper.map(user, UserReadDTO.class);
-            return Optional.of(userReadDTO);
+            return modelMapper.map(user, UserReadDTO.class);
+        } else {
+            throw new ResourceNotFoundException("User not found", "Read user", "User not found with ID: " + userId);
         }
-        else return Optional.empty();
     }
 
     @Override
-    public void update(UserUpdateDTO userUpdateDto) {
-        Optional<User> userOptional = userRepository.findById(userUpdateDto.getId());
+    public void update(UserUpdateDTO userUpdateDTO) throws ResourceNotFoundException {
+        Optional<User> userOptional = userRepository.findById(userUpdateDTO.getId());
         if (userOptional.isPresent()) {
-            User user = modelMapper.map(userUpdateDto, User.class);
+            User user = modelMapper.map(userUpdateDTO, User.class);
             userRepository.save(user);
         } else {
-            throw new IllegalArgumentException("User not found with ID: " + userUpdateDto.getId());
+            throw new ResourceNotFoundException("User not found", "Update user", "User not found with ID: " + userUpdateDTO.getId());
         }
     }
 
     @Override
-    public void delete(Integer userId) {
+    public void delete(Integer userId) throws ResourceNotFoundException {
+        read(userId);
         userRepository.deleteById(userId);
     }
 
     @Override
-    public List<UserReadDTO> readAll() {
-        return userRepository.findAll().stream()
+    public List<UserReadDTO> readAll() throws NoRecordException {
+        List<User> users = userRepository.findAll();
+        if (users.isEmpty()){
+            throw new NoRecordException("No users registered", "List of user", "No records of users exist in database.");
+        }
+        return users.stream()
                 .map(user -> modelMapper.map(user, UserReadDTO.class))
                 .collect(Collectors.toList());
     }
