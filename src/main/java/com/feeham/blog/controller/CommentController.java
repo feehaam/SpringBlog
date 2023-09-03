@@ -31,9 +31,9 @@ public class CommentController {
         return commentService.read(commentId);
     }
 
-    @PutMapping
-    public void updateComment(@RequestBody CommentUpdateDTO commentUpdateDTO) {
-        commentService.update(commentUpdateDTO);
+    @PutMapping("/{commentId}")
+    public void updateComment(@PathVariable Integer commentId, @RequestBody String content) {
+        commentService.update(new CommentUpdateDTO(commentId, content));
     }
 
     @DeleteMapping("/{commentId}")
