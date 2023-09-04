@@ -1,7 +1,6 @@
 package com.feeham.blog.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mysql.cj.protocol.ColumnDefinition;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

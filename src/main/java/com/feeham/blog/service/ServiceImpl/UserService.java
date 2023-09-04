@@ -11,6 +11,7 @@ import com.feeham.blog.service.IService.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class UserService implements IUserService {
     @Override
     public void create(UserCreateDTO userCreateDto) {
         User user = modelMapper.map(userCreateDto, User.class);
+        user.setDateJoined(LocalDate.now());
         userRepository.save(user);
     }
 
