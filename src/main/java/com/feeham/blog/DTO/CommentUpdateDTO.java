@@ -2,6 +2,7 @@ package com.feeham.blog.DTO;
 
 import org.springframework.stereotype.Component;
 
+// Comment data transfer object for updating a Comment
 @Component
 public class CommentUpdateDTO {
     private Integer commentId;

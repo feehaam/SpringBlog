@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+// Comment data transfer object for Creating a Post
 @Component
 public class PostCreateDTO {
     private String title;

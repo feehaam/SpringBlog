@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
+// Comment data transfer object for read a User
 @Component
 public class UserReadDTO {
     private Integer id;

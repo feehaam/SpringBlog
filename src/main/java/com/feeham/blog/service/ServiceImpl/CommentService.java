@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CommentService implements ICommentService {
-
+    // Constructor injection of repositories and services
     private final CommentRepository commentRepository;
     private final ManualMapper manualMapper;
 
@@ -26,11 +26,21 @@ public class CommentService implements ICommentService {
         this.manualMapper = manualMapper;
     }
 
+    /**
+     * Create a new comment.
+     * @param commentCreateDto The DTO containing comment data to create.
+     */
     @Override
     public void create(CommentCreateDTO commentCreateDto) {
         commentRepository.save(manualMapper.CommentCreateDTOtoComment(commentCreateDto));
     }
 
+    /**
+     * Read a comment by its ID.
+     * @param commentId The ID of the comment to read.
+     * @return The read CommentReadDTO.
+     * @throws ResourceNotFoundException if the comment does not exist.
+     */
     @Override
     public CommentReadDTO read(Integer commentId) throws ResourceNotFoundException{
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
@@ -40,15 +50,25 @@ public class CommentService implements ICommentService {
         return manualMapper.CommentToCommentReadDTO(commentOptional.get());
     }
 
+    /**
+     * Update a comment's content.
+     * @param commentUpdateDto The DTO containing comment data to update.
+     * @throws ResourceNotFoundException if the comment does not exist.
+     */
     @Override
     public void update(CommentUpdateDTO commentUpdateDto) throws ResourceNotFoundException{
         Optional<Comment> commentOptional = commentRepository.findById(commentUpdateDto.getCommentId());
         Comment comment = commentOptional.orElseThrow(() -> new ResourceNotFoundException("Comment not found",
-                        "Update comment", "Comment with ID " + commentUpdateDto.getCommentId() + " does not exist."));
+                "Update comment", "Comment with ID " + commentUpdateDto.getCommentId() + " does not exist."));
         comment.setContent(commentUpdateDto.getContent());
         commentRepository.save(comment);
     }
 
+    /**
+     * Delete a comment by its ID.
+     * @param commentId The ID of the comment to delete.
+     * @throws ResourceNotFoundException if the comment does not exist.
+     */
     @Override
     public void delete(Integer commentId) throws ResourceNotFoundException{
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
@@ -58,6 +78,11 @@ public class CommentService implements ICommentService {
         commentRepository.deleteById(commentId);
     }
 
+    /**
+     * Read all comments.
+     * @return A list of CommentReadDTOs.
+     * @throws NoRecordException if no comments are found.
+     */
     @Override
     public List<CommentReadDTO> readAll() throws NoRecordException{
         if(commentRepository.findAll().isEmpty()){

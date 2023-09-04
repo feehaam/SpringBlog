@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+// Comment data transfer object for Updating a Post
 @Component
 public class PostUpdateDTO {
     private Integer id;

@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class ManualMapper {
 
+    // Constructor injection of repositories
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -29,6 +30,12 @@ public class ManualMapper {
         this.postRepository = postRepository;
     }
 
+    /**
+     * Converts a Post entity to a PostReadDTO.
+     * @param post The Post entity to convert.
+     * @return The corresponding PostReadDTO.
+     * @throws DTO_ConversionException if the conversion fails.
+     */
     public PostReadDTO postToPostReadDTO(Post post) throws DTO_ConversionException{
 
         try{
@@ -52,18 +59,29 @@ public class ManualMapper {
         }
     }
 
+    /**
+     * Converts a CommentCreateDTO to a Comment entity.
+     * @param commentDto The CommentCreateDTO to convert.
+     * @return The corresponding Comment entity.
+     * @throws DTO_ConversionException if the conversion fails.
+     */
     public Comment CommentCreateDTOtoComment(CommentCreateDTO commentDto) throws DTO_ConversionException{
         try{
             Comment comment = new Comment();
             comment.setContent(commentDto.getContent());
+
+            // Special case: Set parent comment if available
             if(commentDto.getParentCommentId() != null && commentDto.getParentCommentId() > 0){
                 Comment parentComment = commentRepository.findById(commentDto.getParentCommentId()).get();
                 comment.setParentComment(parentComment);
             }
+
+            // Special case: Set parent post if available
             if(commentDto.getPostId() != null && commentDto.getPostId() > 0){
                 Post parentPost = postRepository.findById(commentDto.getPostId()).get();
                 comment.setParentPost(parentPost);
             }
+
             comment.setTimeCreated(LocalDateTime.now());
             comment.setReplies(new ArrayList<>());
             comment.setUser(userRepository.findById(commentDto.getUserId()).get());
@@ -78,6 +96,12 @@ public class ManualMapper {
         }
     }
 
+    /**
+     * Converts a Comment entity to a CommentReadDTO.
+     * @param comment The Comment entity to convert.
+     * @return The corresponding CommentReadDTO.
+     * @throws DTO_ConversionException if the conversion fails.
+     */
     public CommentReadDTO CommentToCommentReadDTO(Comment comment) throws DTO_ConversionException {
         try{
             CommentReadDTO commentReadDTO = new CommentReadDTO();
@@ -90,6 +114,8 @@ public class ManualMapper {
             commentReadDTO.setUserFullName(comment.getUser().getFirstName() +" "+comment.getUser().getLastName());
             commentReadDTO.setUserEmail(comment.getUser().getEmail());
             commentReadDTO.setParentPostId(comment.getParentPost().getId());
+
+            // Special case: Set parent comment ID if available
             commentReadDTO.setParentCommentId(comment.getParentComment() != null ? comment.getParentComment().getId() : null);
 
             // Recursively convert each reply

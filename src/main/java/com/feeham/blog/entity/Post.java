@@ -8,23 +8,29 @@ import java.util.List;
 @Entity
 @Table(name = "posts")
 public class Post {
+    // Post id - primary key
     @Id
     @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    // Other properties
     private String title;
+    // The content of the post, defined as TEXT for better storage
     @Column(columnDefinition = "TEXT")
     private String content;
     private LocalDateTime timeCreated;
     private LocalDateTime timeLastModified;
 
     // Relational references
+    // Many-to-One relationship with User (author of the post)
     @ManyToOne
     @JoinColumn(name = "author_uid")
     @JsonIgnore
     private User author;
+    // One-to-Many relationship with Comment (comments on the post)
     @OneToMany(mappedBy = "parentPost", cascade = CascadeType.ALL)
     private List<Comment> comments;
+    // Many-to-Many relationship with Tag (tags associated with the post)
     @ManyToMany
     @JoinTable(
             name = "posts_tags",
@@ -34,10 +40,11 @@ public class Post {
     @JsonIgnore
     private List<Tag> tags;
 
+    // Default constructor
     public Post() {
-
     }
 
+    // Parameterized constructor
     public Post(Integer id, String title, String content, LocalDateTime timeCreated,
                 LocalDateTime timeLastModified, User author, List<Comment> comments, List<Tag> tags) {
         this.id = id;
@@ -50,6 +57,7 @@ public class Post {
         this.tags = tags;
     }
 
+    // Getter and Setter methods for class attributes
     public Integer getId() {
         return id;
     }

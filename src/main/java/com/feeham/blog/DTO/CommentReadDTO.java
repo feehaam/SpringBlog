@@ -5,6 +5,7 @@ import com.feeham.blog.entity.Comment;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// Comment data transfer object for reading a Comment
 public class CommentReadDTO {
     private Integer id;
     private String content;

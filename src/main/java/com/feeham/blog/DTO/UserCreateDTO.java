@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+// Comment data transfer object for Creating a User
 @Component
 public class UserCreateDTO {
     private String email;

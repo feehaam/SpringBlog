@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements IUserService {
 
+    // Constructor injection of repositories and services
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
@@ -27,6 +28,10 @@ public class UserService implements IUserService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * Create a new user.
+     * @param userCreateDto The DTO containing user data to create.
+     */
     @Override
     public void create(UserCreateDTO userCreateDto) {
         User user = modelMapper.map(userCreateDto, User.class);
@@ -34,6 +39,12 @@ public class UserService implements IUserService {
         userRepository.save(user);
     }
 
+    /**
+     * Read a user by their ID.
+     * @param userId The ID of the user to read.
+     * @return The read UserReadDTO.
+     * @throws ResourceNotFoundException if the user does not exist.
+     */
     @Override
     public UserReadDTO read(Integer userId) throws ResourceNotFoundException {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -45,6 +56,11 @@ public class UserService implements IUserService {
         }
     }
 
+    /**
+     * Update user information.
+     * @param userUpdateDTO The DTO containing updated user data.
+     * @throws ResourceNotFoundException if the user does not exist.
+     */
     @Override
     public void update(UserUpdateDTO userUpdateDTO) throws ResourceNotFoundException {
         Optional<User> userOptional = userRepository.findById(userUpdateDTO.getId());
@@ -56,17 +72,27 @@ public class UserService implements IUserService {
         }
     }
 
+    /**
+     * Delete a user by their ID.
+     * @param userId The ID of the user to delete.
+     * @throws ResourceNotFoundException if the user does not exist.
+     */
     @Override
     public void delete(Integer userId) throws ResourceNotFoundException {
         read(userId);
         userRepository.deleteById(userId);
     }
 
+    /**
+     * Read all users.
+     * @return A list of UserReadDTOs.
+     * @throws NoRecordException if no users are found.
+     */
     @Override
     public List<UserReadDTO> readAll() throws NoRecordException {
         List<User> users = userRepository.findAll();
         if (users.isEmpty()){
-            throw new NoRecordException("No users registered", "List of user", "No records of users exist in database.");
+            throw new NoRecordException("No users registered", "List of user", "No records of users exist in the database.");
         }
         return users.stream()
                 .map(user -> modelMapper.map(user, UserReadDTO.class))

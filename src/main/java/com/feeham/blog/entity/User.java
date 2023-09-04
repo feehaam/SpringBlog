@@ -9,12 +9,16 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
+    // Id for the user - primary key
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    // User's email (unique)
     @Column(unique = true)
     private String email;
+    // Other user information
     private String password;
     private String firstName;
     private String lastName;
@@ -26,17 +30,20 @@ public class User {
     private LocalDate dateJoined;
 
     // Relationships
+    // One-to-Many relationship with Post (posts authored by the user)
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Post> posts; // Posts authored by the user
+    private List<Post> posts;
 
+    // One-to-Many relationship with Comment (comments made by the user)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> comments; // Comments made by the user
+    private List<Comment> comments;
 
+    // Default constructor
     public User() {
-
     }
 
+    // Parameterized constructor
     public User(Integer id, String email, String password, String firstName, String lastName,
                 Integer age, LocalDate dateOfBirth, String bio, String profileImageUrl,
                 LocalDate dateJoined, List<Post> posts, List<Comment> comments) {
@@ -54,10 +61,10 @@ public class User {
         this.comments = comments;
     }
 
+    // Getter and Setter methods for class attributes
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }

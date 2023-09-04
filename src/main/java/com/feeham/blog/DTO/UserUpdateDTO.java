@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+// Comment data transfer object for updating a User
 @Component
 public class UserUpdateDTO {
     private Integer id;

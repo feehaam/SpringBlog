@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostService implements IPostService {
+
+    // Constructor injection of repositories and services
     private final PostRepository postRepository;
     private final ModelMapper autoMapper;
     private final UserRepository userRepository;
@@ -38,6 +40,11 @@ public class PostService implements IPostService {
         this.manualMapper = manualMapper;
     }
 
+    /**
+     * Create a new post.
+     * @param postCreateDTO The DTO containing post data to create.
+     * @throws ResourceNotFoundException if the author of the post does not exist.
+     */
     @Override
     public void create(PostCreateDTO postCreateDTO) throws ResourceNotFoundException {
         Post post = new Post();
@@ -65,6 +72,12 @@ public class PostService implements IPostService {
         }
     }
 
+    /**
+     * Read a post by its ID.
+     * @param postId The ID of the post to read.
+     * @return The read PostReadDTO.
+     * @throws ResourceNotFoundException if the post does not exist.
+     */
     @Override
     public PostReadDTO read(Integer postId) throws ResourceNotFoundException {
         Optional<Post> postOptional = postRepository.findById(postId);
@@ -73,6 +86,11 @@ public class PostService implements IPostService {
                         "Post with ID " + postId + " does not exist."));
     }
 
+    /**
+     * Update a post's content.
+     * @param postUpdateDTO The DTO containing post data to update.
+     * @throws ResourceNotFoundException if the post does not exist.
+     */
     @Override
     public void update(PostUpdateDTO postUpdateDTO) throws ResourceNotFoundException {
         Optional<Post> postOptional = postRepository.findById(postUpdateDTO.getId());
@@ -86,6 +104,11 @@ public class PostService implements IPostService {
         }
     }
 
+    /**
+     * Delete a post by its ID.
+     * @param postId The ID of the post to delete.
+     * @throws ResourceNotFoundException if the post does not exist.
+     */
     @Override
     public void delete(Integer postId) throws ResourceNotFoundException {
         if (!postRepository.existsById(postId)) {
@@ -95,6 +118,11 @@ public class PostService implements IPostService {
         postRepository.deleteById(postId);
     }
 
+    /**
+     * Read all posts.
+     * @return A list of PostReadDTOs.
+     * @throws NoRecordException if no posts are found.
+     */
     @Override
     public List<PostReadDTO> readAll() throws NoRecordException {
         List<Post> posts = postRepository.findAll();
@@ -106,6 +134,12 @@ public class PostService implements IPostService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Add a tag to a post.
+     * @param postId The ID of the post to add the tag to.
+     * @param tagId The ID of the tag to add.
+     * @throws ResourceNotFoundException if the post does not exist.
+     */
     @Override
     public void addTagToPost(Integer postId, Integer tagId) throws ResourceNotFoundException{
         Tag tag = tagService.read(tagId);
